@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidratate</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icono.svg">
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hidratación Diaria</h1>
+    <div class="meta-input">
+      Meta: <input type="number" id="goalInput" value="2000" step="100" onchange="updateGoal(this.value)"> ml
+    </div>
+
+    <div class="progress-outer" id="circleProgress">
+      <div class="progress-inner">
+        <div class="water-value" id="currentDisplay">0 ml</div>
+        <div class="water-percent" id="percentDisplay">0%</div>
+      </div>
+    </div>
+
+    <div class="grid-buttons">
+      <button onclick="addWater(250)">🥛 +250 ml</button>
+      <button onclick="addWater(330)">☕ +330 ml</button>
+      <button onclick="addWater(500)">🍼 +500 ml</button>
+      <button onclick="addWater(1000)">🧴 +1L</button>
+    </div>
+
+    <!-- Panel inferior con el nuevo botón de corregir/restar -->
+    <div class="control-buttons">
+      <button class="danger-outline" onclick="removeLastWater()">↩️ Restar 250ml</button>
+      <button class="secondary" onclick="resetToday()">🔄 Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="history-title">Últimos 7 días</div>
+    <div class="bar-chart" id="chart"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
