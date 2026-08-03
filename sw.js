@@ -2,7 +2,9 @@ const CACHE_NAME = 'hidra-v1';
 const ASSETS = [
   'index.html',
   'manifest.json',
-  'icon.svg'
+  'estilos.css',
+  'app.js',
+  'icono.svg'
 ];
 
 self.addEventListener('install', e => {
