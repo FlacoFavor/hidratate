@@ -7,10 +7,16 @@
   <link rel="stylesheet" href="estilos.css">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="icono.svg">
+  <link rel="apple-touch-icon" href="icono.svg">
 </head>
 <body>
 
   <div class="card">
+    <div class="top-info">
+      <span class="streak-badge" id="streakDisplay">🔥 0 días</span>
+      <span class="season-badge" id="seasonDisplay">☀️ Temp. Cálida</span>
+    </div>
+
     <h1>Hidratación Diaria</h1>
     <div class="meta-input">
       Meta: <input type="number" id="goalInput" value="2000" step="100" onchange="updateGoal(this.value)"> ml
@@ -23,6 +29,8 @@
       </div>
     </div>
 
+    <div class="time-reminder" id="timeReminder">Buscando última ingesta...</div>
+
     <div class="grid-buttons">
       <button onclick="addWater(250)">🥛 +250 ml</button>
       <button onclick="addWater(330)">☕ +330 ml</button>
@@ -30,9 +38,8 @@
       <button onclick="addWater(1000)">🧴 +1L</button>
     </div>
 
-    <!-- Panel inferior con el nuevo botón de corregir/restar -->
     <div class="control-buttons">
-      <button class="danger-outline" onclick="removeLastWater()">↩️ Restar 250ml</button>
+      <button class="danger-outline" onclick="removeLastWater()">↩️ Restar</button>
       <button class="secondary" onclick="resetToday()">🔄 Reiniciar</button>
     </div>
   </div>
@@ -41,7 +48,7 @@
     <div class="history-title">Últimos 7 días</div>
     <div class="bar-chart" id="chart"></div>
   </div>
-
+  
   <script src="app.js"></script>
 </body>
 </html>
