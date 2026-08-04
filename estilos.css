@@ -1,80 +1,119 @@
-    /* 5. MODO OSCURO: Variables de diseño dinámicas */
-    :root { 
-      --primary: #2196f3; 
-      --bg: #f0f4f8; 
-      --card: #ffffff; 
-      --text: #333333; 
-      --danger: #f44336; 
-      --muted: #777777;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121212;
-        --card: #1e1e1e;
-        --text: #e0e0e0;
-        --muted: #aaaaaa;
-      }
-    }
-    
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: background 0.3s; }
-    .card { background: var(--card); padding: 24px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; margin-bottom: 16px; transition: background 0.3s; position: relative; }
-    h1 { font-size: 1.5rem; margin-bottom: 4px; color: #1565c0; }
-    
-    /* 1 y 2. Estilos para Ráfaga y Clima */
-    .top-info { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; font-weight: bold; color: var(--muted); padding: 0 4px; }
-    .streak-badge { color: #ff9800; }
-    .season-badge { color: #4caf50; }
-    
-    .meta-input { margin-bottom: 20px; font-size: 0.9rem; color: var(--muted); }
-    .meta-input input { width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-weight: bold; background: transparent; color: var(--text); }
-    
-    /* Círculo de Progreso */
-    .progress-outer { 
-      position: relative; 
-      width: 170px; 
-      height: 170px; 
-      margin: 0 auto 15px; 
-      border-radius: 50%; 
-      background: conic-gradient(var(--primary) 0%, #e3f2fd 0%); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      transition: background 0.3s ease;
-    }
-    .progress-inner { 
-      width: 150px; 
-      height: 150px; 
-      background: var(--card); 
-      border-radius: 50%; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center; 
-      transition: background 0.3s;
-    }
-    .water-value { font-size: 1.8rem; font-weight: bold; color: var(--primary); }
-    .water-percent { font-size: 0.9rem; color: var(--muted); }
+/* MODO OSCURO: Variables de diseño dinámicas */
+:root { 
+  --primary: #2196f3; 
+  --bg: #f0f4f8; 
+  --card: #ffffff; 
+  --text: #333333; 
+  --danger: #f44336; 
+  --muted: #777777;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaaaaa;
+  }
+}
 
-    /* 3. Recordatorio de última ingesta */
-    .time-reminder { font-size: 0.8rem; color: var(--muted); margin-bottom: 15px; font-weight: 500; }
-    .time-reminder.alert { color: var(--danger); font-weight: bold; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: background 0.3s; }
+.card { background: var(--card); padding: 24px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; margin-bottom: 16px; transition: background 0.3s; position: relative; }
+h1 { font-size: 1.5rem; margin-bottom: 4px; color: #1565c0; }
 
-    .grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    button { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.1s, opacity 0.2s; -webkit-tap-highlight-color: transparent; }
-    button:active { transform: scale(0.96); opacity: 0.9; }
-    
-    .control-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
-    button.secondary { background: #e0e0e0; color: #555; font-size: 0.9rem; padding: 10px; }
-    button.danger-outline { background: transparent; color: var(--danger); border: 2px solid var(--danger); font-size: 0.9rem; padding: 10px; }
-    @media (prefers-color-scheme: dark) {
-      button.secondary { background: #333333; color: #ccc; }
-    }
+/* Estilos para Ráfaga y Clima */
+.top-info { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; font-weight: bold; color: var(--muted); padding: 0 4px; }
+.streak-badge { color: #ff9800; }
+.season-badge { color: #4caf50; }
 
-    /* Historial */
-    .history-title { font-size: 1rem; font-weight: bold; margin-bottom: 12px; text-align: left; color: var(--muted); }
-    .bar-chart { display: flex; justify-content: space-between; align-items: flex-end; height: 100px; padding-top: 15px; }
-    .bar-container { display: flex; flex-direction: column; align-items: center; flex: 1; }
-    .bar { width: 14px; background: #90caf9; border-radius: 4px 4px 0 0; transition: height 0.5s ease; position: relative; }
-    .bar.goal-reached { background: var(--primary); }
-    .bar-day { font-size: 11px; color: var(--muted); margin-top: 6px; text-transform: uppercase; }
+.meta-input { margin-bottom: 20px; font-size: 0.9rem; color: var(--muted); }
+.meta-input input { width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-weight: bold; background: transparent; color: var(--text); }
+
+/* Círculo de Progreso */
+.progress-outer { 
+  position: relative; 
+  width: 170px; 
+  height: 170px; 
+  margin: 0 auto 15px; 
+  border-radius: 50%; 
+  background: conic-gradient(var(--primary) 0%, #e3f2fd 0%); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+.progress-inner { 
+  width: 150px; 
+  height: 150px; 
+  background: var(--card); 
+  border-radius: 50%; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  transition: background 0.3s;
+}
+.water-value { font-size: 1.8rem; font-weight: bold; color: var(--primary); }
+.water-percent { font-size: 0.9rem; color: var(--muted); }
+
+/* Recordatorio de última ingesta */
+.time-reminder { font-size: 0.8rem; color: var(--muted); margin-bottom: 15px; font-weight: 500; }
+.time-reminder.alert { color: var(--danger); font-weight: bold; }
+
+.grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+button { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.1s, opacity 0.2s; -webkit-tap-highlight-color: transparent; }
+button:active { transform: scale(0.96); opacity: 0.9; }
+
+.control-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+button.secondary { background: #e0e0e0; color: #555; font-size: 0.9rem; padding: 10px; }
+button.danger-outline { background: transparent; color: var(--danger); border: 2px solid var(--danger); font-size: 0.9rem; padding: 10px; }
+@media (prefers-color-scheme: dark) {
+  button.secondary { background: #333333; color: #ccc; }
+}
+
+/* Historial */
+.history-title { 
+  font-size: 1rem; 
+  font-weight: bold; 
+  margin-bottom: 12px; 
+  text-align: left; 
+  color: var(--muted); 
+}
+
+.bar-chart { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-end; 
+  height: 100px; /* El gráfico mide 100px */
+  padding-top: 15px; 
+}
+
+/* 🔵 AQUÍ ESTÁ EL CAMBIO CRÍTICO */
+.bar-container { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: flex-end; /* Empuja las barras hacia el suelo del gráfico */
+  flex: 1; 
+  height: 80px; /* 👈 FORZAMOS una altura real para que el % de JS funcione */
+}
+
+.bar { 
+  width: 14px; 
+  background: #90caf9; 
+  border-radius: 4px 4px 0 0; 
+  transition: height 0.5s ease; 
+  position: relative; 
+}
+
+.bar.goal-reached { 
+  background: var(--primary); 
+}
+
+.bar-day { 
+  font-size: 11px; 
+  color: var(--muted); 
+  margin-top: 6px; 
+  text-transform: uppercase; 
+}
+
