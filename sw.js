@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hidra-v2';
+const CACHE_NAME = 'hidra-v2.1';
 const ASSETS = [
   'index.html',
   'manifest.json',
@@ -7,25 +7,25 @@ const ASSETS = [
   'icono.svg'
 ];
 
-// Instalación: Guarda todo en caché de forma segura
+// InstalaciÃ³n: Guarda todo en cachÃ© de forma segura
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('SW: Abriendo caché y guardando recursos');
+      console.log('SW: Abriendo cachÃ© y guardando recursos');
       return cache.addAll(ASSETS);
     })
   );
   self.skipWaiting();
 });
 
-// Activación: Limpia de inmediato cualquier versión antigua (v1, etc.)
+// ActivaciÃ³n: Limpia de inmediato cualquier versiÃ³n antigua (v1, etc.)
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
         keys.map(key => {
           if (key !== CACHE_NAME) {
-            console.log('SW: Eliminando caché antigua:', key);
+            console.log('SW: Eliminando cachÃ© antigua:', key);
             return caches.delete(key);
           }
         })
@@ -35,11 +35,11 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Estrategia: Caché Primero con tolerancia para rutas raíz (/)
+// Estrategia: CachÃ© Primero con tolerancia para rutas raÃ­z (/)
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // CONTROL CRÍTICO: Si el usuario entra a la raíz "/", le servimos el index.html de la caché
+  // CONTROL CRÃTICO: Si el usuario entra a la raÃ­z "/", le servimos el index.html de la cachÃ©
   if (url.origin === self.location.origin && url.pathname === '/') {
     e.respondWith(
       caches.match('index.html').then(cachedResponse => {
@@ -53,7 +53,7 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cachedResponse => {
       return cachedResponse || fetch(e.request).catch(() => {
-        // Fallback en caso de que un recurso no exista en caché y estemos offline
+        // Fallback en caso de que un recurso no exista en cachÃ© y estemos offline
         console.log('SW: Recurso no encontrado offline:', e.request.url);
       });
     })
