@@ -67,11 +67,11 @@ button:active { transform: scale(0.96); opacity: 0.9; }
 .control-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
 button.secondary { background: #e0e0e0; color: #555; font-size: 0.9rem; padding: 10px; }
 button.danger-outline { background: transparent; color: var(--danger); border: 2px solid var(--danger); font-size: 0.9rem; padding: 10px; }
-@media (prefers-color-scheme: dark) {
-  button.secondary { background: #333333; color: #ccc; }
-}
 
-/* Historial */
+/* ========================================================
+   SECCIÓN HISTORIAL: ALINEACIÓN MILIMÉTRICA A 100px NETOS
+   ======================================================== */
+
 .history-title { 
   font-size: 1rem; 
   font-weight: bold; 
@@ -80,22 +80,48 @@ button.danger-outline { background: transparent; color: var(--danger); border: 2
   color: var(--muted); 
 }
 
+/* El contenedor wrapper engloba todo en una altura real de 100px */
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100px; /* 👈 Altura nativa original */
+  margin-top: 15px;
+  z-index: 10;
+}
+
+/* Las líneas ocupan el 100% de los 100px */
+.chart-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px; 
+  z-index: 11;
+}
+
+/* El gráfico se estira exactamente al mismo tamaño (100px) sin padding-top */
 .bar-chart { 
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px; 
   display: flex; 
   justify-content: space-between; 
   align-items: flex-end; 
-  height: 100px; /* El gráfico mide 100px */
-  padding-top: 15px; 
+  z-index: 12;
+  background: transparent;
 }
 
-/* 🔵 AQUÍ ESTÁ EL CAMBIO CRÍTICO */
+/* 🟢 AQUÍ ESTÁ EL CAMBIO CRÍTICO: Quitamos los 80px para que use los 100px reales */
 .bar-container { 
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  justify-content: flex-end; /* Empuja las barras hacia el suelo del gráfico */
+  justify-content: flex-end; 
   flex: 1; 
-  height: 80px; /* 👈 FORZAMOS una altura real para que el % de JS funcione */
+  height: 100px; /* 👈 Sincronizado al 100% con las líneas */
+  position: relative;
 }
 
 .bar { 
@@ -103,17 +129,58 @@ button.danger-outline { background: transparent; color: var(--danger); border: 2
   background: #90caf9; 
   border-radius: 4px 4px 0 0; 
   transition: height 0.5s ease; 
-  position: relative; 
 }
 
 .bar.goal-reached { 
   background: var(--primary); 
 }
 
+/* Sacamos el texto hacia abajo de los 100px para que no rompa la matemática */
 .bar-day { 
   font-size: 11px; 
   color: var(--muted); 
-  margin-top: 6px; 
   text-transform: uppercase; 
+  position: absolute;
+  bottom: -20px; /* Queda perfectamente ordenado abajo */
 }
 
+/* Estilo de las líneas discontinuas */
+.chart-line-row {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-top: 1px dashed #11223380;
+  display: flex;
+}
+
+.chart-line-row span {
+  font-size: 9px;
+  color: var(--muted);
+  background: var(--card); /* Tapa la línea discontinua detrás del texto */
+  padding-right: 5px;
+  margin-top: -6px;
+  font-weight: bold;
+}
+
+
+/* 🌙 CONFIGURACIÓN PARA EL MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaaaaa;
+  }
+  
+  button.secondary { background: #333333; color: #ccc; }
+
+  /* 🟢 Invertimos a un azul claro brillante para que no se pierda en el fondo oscuro */
+  .chart-line-row {
+    border-top: 1px dashed #ddeeff80; 
+  }
+
+  .chart-line-row span {
+    color: #90caf9; /* Azul claro pastel de alto contraste */
+    background: var(--card); /* Sigue tapando la línea con el fondo oscuro #1e1e1e */
+  }
+}

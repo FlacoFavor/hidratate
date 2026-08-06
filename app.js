@@ -1,8 +1,8 @@
-// Obtiene la fecha local del dispositivo en formato AAAA-MM-DD sin desfases UTC
+// 🟢 TU FUNCIÓN ORIGINAL EXACTA CON EL INDICE [0] AL FINAL
 const getLocalDateString = (date) => {
   const offset = date.getTimezoneOffset();
   const localDate = new Date(date.getTime() - (offset * 60 * 1000));
-  return localDate.toISOString().split('T')[0];
+  return localDate.toISOString().split('T')[0]; 
 };
 
 const getTodayKey = () => getLocalDateString(new Date());
@@ -49,18 +49,16 @@ function checkStreak() {
 
   if (todayWater >= state.goal) {
     if (state.lastStreakUpdate !== today) {
-      // Si ayer se cumplió o la ráfaga estaba en 0, incrementa de forma segura
       if (state.lastStreakUpdate === yesterdayKey || state.streak === 0) {
         state.streak++;
       } else {
-        state.streak = 1; // Reseteo si hubo días vacíos en medio
+        state.streak = 1; 
       }
       state.lastStreakUpdate = today;
       localStorage.setItem('water_streak', state.streak);
       localStorage.setItem('water_last_streak_date', state.lastStreakUpdate);
     }
   } else {
-    // Corrección: Si hoy no se ha cumplido y ya pasó el día de ayer sin registrar ráfaga, se rompe inmediatamente
     if (state.lastStreakUpdate !== today && state.lastStreakUpdate !== yesterdayKey && state.streak > 0) {
       state.streak = 0;
       localStorage.setItem('water_streak', state.streak);
@@ -114,6 +112,11 @@ function addWater(amount) {
   state.lastDrinkTime = new Date().getTime().toString();
   localStorage.setItem('water_last_drink_time', state.lastDrinkTime);
   
+  // 🟢 VIBRACIÓN: 40 milisegundos (un toque sutil táctil muy agradable)
+  if ('vibrate' in navigator) {
+    navigator.vibrate(40);
+  }
+  
   checkStreak();
   saveAndRender();
 }
@@ -126,11 +129,15 @@ function removeLastWater() {
     state.history[today] = 0;
   }
   
-  // Forzar verificación por si al restar bajamos de la meta de hoy
+  // 🟢 VIBRACIÓN: Vibra 30ms, para 40ms, y vuelve a vibrar 30ms
+  if ('vibrate' in navigator) {
+    navigator.vibrate([30, 40, 30]);
+  }
+  
   const yesterdayKey = getYesterdayKey();
   if (state.history[today] < state.goal && state.lastStreakUpdate === today) {
     state.streak = Math.max(0, state.streak - 1);
-    state.lastStreakUpdate = yesterdayKey; // Revertir temporalmente al día anterior
+    state.lastStreakUpdate = yesterdayKey; 
     localStorage.setItem('water_streak', state.streak);
     localStorage.setItem('water_last_streak_date', state.lastStreakUpdate);
   }
@@ -144,6 +151,11 @@ function resetToday() {
     state.history[getTodayKey()] = 0;
     state.lastDrinkTime = '';
     localStorage.removeItem('water_last_drink_time');
+	
+	// 🟢 VIBRACIÓN: Una vibración continua de 150ms para indicar un reseteo total
+    if ('vibrate' in navigator) {
+      navigator.vibrate(150);
+    }
     
     if(state.lastStreakUpdate === getTodayKey()) {
       state.streak = Math.max(0, state.streak - 1);
@@ -171,7 +183,6 @@ function render() {
   const percent = Math.min(Math.round((current / state.goal) * 100), 100);
   document.getElementById('percentDisplay').innerText = `${percent}%`;
 
-  // OPTIMIZACIÓN: Color de fondo adaptativo usando RGBA transparente para no romper el modo oscuro
   const circle = document.getElementById('circleProgress');
   if (percent >= 100) {
     circle.style.background = `conic-gradient(#4caf50 100%, rgba(0,0,0,0.1) 0%)`;
@@ -187,24 +198,47 @@ function render() {
 
   updateTimerDisplay();
 
+  // 🟢 ESCALA FIJA SINCRONIZADA A LA META REAL (state.goal) PARA EVITAR EL DESFASE DE MEDIO LITRO
+  const linesContainer = document.getElementById('chartLines');
+  if (linesContainer) {
+    const top2L = 100 - ((2000 / state.goal) * 100);
+	const lM = 100 - ((1500 / state.goal) * 100);
+    const top1L = 100 - ((1000 / state.goal) * 100); 
+	const mL = 100 - ((500 / state.goal) * 100);
+
+    linesContainer.innerHTML = `
+      <div class="chart-line-row" style="top: ${top2L}%;"><span>2L</span></div>
+	  <div class="chart-line-row" style="top: ${lM}%;"><span></span></div>
+      <div class="chart-line-row" style="top: ${top1L}%;"><span>1L</span></div>
+	  <div class="chart-line-row" style="top: ${mL}%;"><span></span></div>
+    `;
+  }
+
   const chartEl = document.getElementById('chart');
+  if (!chartEl) return;
   chartEl.innerHTML = '';
 
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    const key = getLocalDateString(d);
+    const key = getLocalDateString(d); 
     const val = state.history[key] || 0;
     
     const dayName = d.toLocaleDateString('es', { weekday: 'short' }).substring(0,2);
-    const pct = Math.min((val / state.goal) * 100, 100);
+    
+    // 🟢 LAS BARRAS AHORA UTILIZAN TU META REAL, IGUAL QUE LAS LÍNEAS DE ARRIBA
+    const pct = (val / state.goal) * 100;
 
     const barContainer = document.createElement('div');
     barContainer.className = 'bar-container';
     
     const bar = document.createElement('div');
     bar.className = `bar ${val >= state.goal ? 'goal-reached' : ''}`;
-    bar.style.height = `${Math.max(pct, 5)}%`;
+    
+    setTimeout(() => {
+      // Sin mínimos del 5% que inflen el gráfico a niveles bajos
+      bar.style.height = `${Math.min(Math.max(pct, 0), 100)}%`;
+    }, 10);
 
     const label = document.createElement('div');
     label.className = 'bar-day';
@@ -229,7 +263,6 @@ if ('serviceWorker' in navigator) {
 checkStreak();
 render();
 
-// OPTIMIZACIÓN: Actualizar el timer inmediatamente cuando el usuario vuelve a abrir la app/pestaña
 window.addEventListener('focus', () => {
   checkStreak();
   render();

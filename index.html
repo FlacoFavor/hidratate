@@ -17,7 +17,7 @@
       <span class="season-badge" id="seasonDisplay">☀️ Temp. Cálida</span>
     </div>
 
-    <h1>Hidratación Diaria</h1>
+    <h1>Hydratación Diaria</h1>
     <div class="meta-input">
       Meta: <input type="number" id="goalInput" value="2000" step="100" onchange="updateGoal(this.value)"> ml
     </div>
@@ -46,7 +46,11 @@
 
   <div class="card">
     <div class="history-title">Últimos 7 días</div>
-    <div class="bar-chart" id="chart"></div>
+    <!-- Contenedor relativo para posicionar las líneas discontinuas detrás de las barras -->
+    <div class="chart-wrapper">
+      <div class="chart-lines" id="chartLines"></div>
+      <div class="bar-chart" id="chart"></div>
+    </div>
   </div>
   
   <script src="app.js"></script>
