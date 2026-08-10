@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hidra-v2.12';
+const CACHE_NAME = 'hidra-v2.1';
 const ASSETS = [
   'index.html',
   'manifest.json',
