@@ -1,12 +1,12 @@
 const CACHE_NAME = 'hidra-v2.2';
 const ASSETS = [
-  '/',
-  'index.html',
-  'manifest.json',
-  'estilos.css',
-  'app.js',
-  'icono.svg',
-  'icono.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './estilos.css',
+  './app.js',
+  './icono.svg',
+  './icono.png'
 ];
 
 // Instalación: Guarda todo en caché de forma segura
