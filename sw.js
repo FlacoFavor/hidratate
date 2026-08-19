@@ -5,7 +5,8 @@ const ASSETS = [
   'manifest.json',
   'estilos.css',
   'app.js',
-  'icono.svg'
+  'icono.svg',
+  'icono.png'
 ];
 
 // Instalación: Guarda todo en caché de forma segura
